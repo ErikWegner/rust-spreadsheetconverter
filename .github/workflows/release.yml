@@ -1,0 +1,22 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        run: cargo build --release && tar zcf spreadsheetconverter-amd64.tar.gz target/release/spreadsheetconverter
+      - name: upload linux artifact
+        uses: softprops/action-gh-release@v1
+        with:
+          files: spreadsheetconverter-amd64.tar.gz
